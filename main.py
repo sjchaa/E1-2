@@ -63,3 +63,36 @@ class Quiz:
             choices=data["choices"],
             answer=int(data["answer"]),
         )
+
+class QuizGame:
+    """퀴즈 게임 전체 진행과 파일 저장/불러오기를 담당하는 클래스"""
+
+    def __init__(self, filepath: str = DATA_FILE):
+        self.filepath = filepath
+        self.quizzes: list[Quiz] = []
+        self.best_score: int = 0
+        self.load_data()
+
+    def load_data(self) -> None:
+        """state.json에서 퀴즈와 최고 점수를 불러오고, 없거나 깨지면 기본값으로 복구"""
+        if not os.path.exists(self.filepath):
+            self.quizzes = [Quiz.from_dict(item) for item in DEFAULT_QUIZZES]
+            self.best_score = 0
+            self.save_data()
+            return
+
+        try:
+            with open(self.filepath, "r", encoding="utf-8") as f:
+                raw = json.load(f)
+
+            loaded_quizzes = raw.get("quizzes", [])
+            if not isinstance(loaded_quizzes, list) or len(loaded_quizzes) == 0:
+                raise ValueError("퀴즈 목록이 비어 있거나 형식이 올바르지 않습니다.")
+
+            self.quizzes = [Quiz.from_dict(item) for item in loaded_quizzes]
+            self.best_score = int(raw.get("best_score", 0))
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError, OSError) as exc:
+            print(f"⚠️ 데이터 파일 문제로 기본 퀴즈로 복구합니다. ({exc})")
+            self.quizzes = [Quiz.from_dict(item) for item in DEFAULT_QUIZZES]
+            self.best_score = 0
+            self.save_data()
