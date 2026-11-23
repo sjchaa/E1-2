@@ -31,3 +31,35 @@ DEFAULT_QUIZZES = [
         "answer": 1,
     },
 ]
+
+class Quiz:
+    """퀴즈 한 문제를 표현하는 클래스"""
+
+    def __init__(self, question: str, choices: list[str], answer: int):
+        self.question = question
+        self.choices = choices
+        self.answer = answer
+
+    def display(self, index: int) -> None:
+        print(f"\n[문제 {index}]")
+        print(self.question)
+        for idx, choice in enumerate(self.choices, start=1):
+            print(f"{idx}. {choice}")
+
+    def check_answer(self, user_choice: int) -> bool:
+        return user_choice == self.answer
+
+    def to_dict(self) -> dict:
+        return {
+            "question": self.question,
+            "choices": self.choices,
+            "answer": self.answer,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Quiz":
+        return cls(
+            question=data["question"],
+            choices=data["choices"],
+            answer=int(data["answer"]),
+        )
