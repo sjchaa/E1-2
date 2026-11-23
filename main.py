@@ -203,5 +203,10 @@ class QuizGame:
                 mark = " (정답)" if c_idx == q.answer else ""
                 print(f"   {c_idx}. {c}{mark}")
 
+    def show_best_score(self) -> None:
+        print("\n🏅 점수 확인")
+        print(f"현재 최고 점수: {self.best_score}점")
+        print(f"등록된 총 퀴즈 수: {len(self.quizzes)}문제")
 
+        
 
