@@ -109,3 +109,21 @@ class QuizGame:
         except OSError as exc:
             print(f"⚠️ 파일 저장 중 오류가 발생했습니다: {exc}")
 
+
+    @staticmethod
+    def input_int_in_range(prompt: str, min_val: int, max_val: int) -> int:
+        """공백 제거 및 예외 처리를 거쳐 min_val ~ max_val 사이 정수를 입력받음"""
+        while True:
+            raw = input(prompt).strip()
+            if not raw:
+                print("⚠️ 빈 값입니다. 다시 입력하세요.")
+                continue
+            try:
+                num = int(raw)
+            except ValueError:
+                print("⚠️ 숫자를 입력하세요.")
+                continue
+
+            if min_val <= num <= max_val:
+                return num
+            print(f"⚠️ {min_val}~{max_val} 사이의 숫자를 입력하세요.")
