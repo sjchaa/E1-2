@@ -208,5 +208,27 @@ class QuizGame:
         print(f"현재 최고 점수: {self.best_score}점")
         print(f"등록된 총 퀴즈 수: {len(self.quizzes)}문제")
 
-        
+    def run(self) -> None:
+        while True:
+            self.show_menu()
+            choice = self.input_int_in_range("선택: ", 1, 5)
+            if choice == 1:
+                self.play_quiz()
+            elif choice == 2:
+                self.add_quiz()
+            elif choice == 3:
+                self.show_quizzes()
+            elif choice == 4:
+                self.show_best_score()
+            elif choice == 5:
+                print("👋 게임을 종료합니다. 수고하셨습니다!")
+                break
 
+
+if __name__ == "__main__":
+    game = QuizGame()
+    try:
+        game.run()
+    except (KeyboardInterrupt, EOFError):
+        game.save_data()
+        print("\n⚠️ 입력이 중단되어 현재 데이터를 저장한 뒤 안전하게 종료합니다.")
