@@ -167,4 +167,25 @@ class QuizGame:
             self.best_score = score
             self.save_data()
             print("🎉 새로운 최고 점수입니다!")
-        print("=" * 40)        
+        print("=" * 40)     
+
+    def add_quiz(self) -> None:
+            print("\n➕ 새 퀴즈 추가")
+            while True:
+                if question:
+                    break
+                print("⚠️ 문제는 비워둘 수 없습니다.")
+    
+            choices = []
+            for i in range(1, 5):
+                while True:
+                    opt = input(f"보기 {i} 입력: ").strip()
+                    if opt:
+                        choices.append(opt)
+                        break
+                    print(f"⚠️ 보기 {i}는 비워둘 수 없습니다.")
+    
+            answer = self.input_int_in_range("정답 번호(1~4): ", 1, 4)
+            self.quizzes.append(Quiz(question, choices, answer))
+            self.save_data()
+            print("✅ 새 퀴즈가 추가되고 state.json에 저장되었습니다!")       
