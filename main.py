@@ -96,3 +96,16 @@ class QuizGame:
             self.quizzes = [Quiz.from_dict(item) for item in DEFAULT_QUIZZES]
             self.best_score = 0
             self.save_data()
+
+    def save_data(self) -> None:
+        """현재 퀴즈 목록과 최고 점수를 state.json에 UTF-8로 저장"""
+        payload = {
+            "quizzes": [q.to_dict() for q in self.quizzes],
+            "best_score": self.best_score,
+        }
+        try:
+            with open(self.filepath, "w", encoding="utf-8") as f:
+                json.dump(payload, f, ensure_ascii=False, indent=4)
+        except OSError as exc:
+            print(f"⚠️ 파일 저장 중 오류가 발생했습니다: {exc}")
+
