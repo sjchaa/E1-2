@@ -188,4 +188,20 @@ class QuizGame:
             answer = self.input_int_in_range("정답 번호(1~4): ", 1, 4)
             self.quizzes.append(Quiz(question, choices, answer))
             self.save_data()
-            print("✅ 새 퀴즈가 추가되고 state.json에 저장되었습니다!")       
+            print("✅ 새 퀴즈가 추가되고 state.json에 저장되었습니다!")     
+
+
+    def show_quizzes(self) -> None:
+        print("\n📚 등록된 퀴즈 목록")
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다.")
+            return
+
+        for idx, q in enumerate(self.quizzes, start=1):
+            print(f"\n[{idx}] {q.question}")
+            for c_idx, c in enumerate(q.choices, start=1):
+                mark = " (정답)" if c_idx == q.answer else ""
+                print(f"   {c_idx}. {c}{mark}")
+
+
+
