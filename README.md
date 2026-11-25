@@ -339,7 +339,7 @@ git merge feature/play-quiz         # 새 브랜치에서 한 작업을 main에 
 GitHub 저장소를 다른 폴더에 복사(clone)해서 수정하고, 원래 폴더에서 그 수정 내용을 받아왔습니다(pull).
 
 ```bash
-git clone <YOUR_GITHUB_URL> E1-2-clone   # 1) 다른 폴더에 저장소 복사
+git clone https://github.com/sjchaa/E1-2 E1-2-clone   # 1) 다른 폴더에 저장소 복사
 cd E1-2-clone
 # 2) README에 한 줄 추가한 뒤
 git add README.md
