@@ -1,10 +1,9 @@
-
 # 나만의 퀴즈 게임
 
 터미널에서 번호를 입력해 객관식 퀴즈를 푸는 게임입니다.
 퀴즈와 최고 점수는 `state.json` 파일에 저장되기 때문에, 프로그램을 껐다가 다시 켜도 그대로 남아 있습니다.
 
-- **GitHub 저장소**: <YOUR_GITHUB_URL>
+- **GitHub 저장소**: <https://github.com/sjchaa/E1-2.git>
 
 ---
 
@@ -57,9 +56,9 @@ python3 main.py
 
 | 화면 | 스크린샷 |
 |---|---|
-| 개발 환경 (VS Code, Python 버전, Git 설정) | ![](docs/screenshots/env.png) |
-| 메뉴 | ![](docs/screenshots/menu.png) |
-| 퀴즈 풀기 | ![](docs/screenshots/play.png) |
+| 개발 환경 (VS Code, Python 버전, Git 설정) | ![](./screenshots/env.png) |
+| 메뉴 | ![](./screenshots/menu.png) |
+| 퀴즈 풀기 | ![](./screenshots/play.png) |
 | 퀴즈 추가 | ![](docs/screenshots/add_quiz.png) |
 | 퀴즈 목록 | ![](docs/screenshots/list.png) |
 | 점수 확인 | ![](docs/screenshots/score.png) |
@@ -244,7 +243,7 @@ E1-2/
 | `abc` | "숫자를 입력하세요." |
 | `9` (메뉴에 없는 번호) | "1~5 사이의 숫자를 입력하세요." |
 | `0` (정답에 없는 번호) | "1~4 사이의 숫자를 입력하세요." |
-| 문제나 보기를 빈 값으로 입력 | "문제는 비워둘 수 없습니다." |
+| 문제나 보기를 빈 값으로 입력하거나, 한글 입력 중 글자가 깨짐 | "문제를 다시 입력하세요. (빈 값이나 깨진 글자는 사용할 수 없습니다)" |
 
 안내 문구를 보여 준 뒤 **다시 입력받습니다.**
 
@@ -424,4 +423,3 @@ git pull origin main                     # 4) 원래 폴더에서 바뀐 내용 
 - `abc`처럼 숫자가 아닌 걸 입력하면 → "숫자를 입력하세요" 후 다시 입력 (`input_number()`)
 - 저장 파일이 깨져 있으면 → 백업 후 기본 퀴즈로 다시 시작 (`load_data()`)
 - `Ctrl+C`를 누르면 → 저장 후 종료 (맨 아래 `if __name__ == "__main__":`)
-
