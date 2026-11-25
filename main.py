@@ -205,22 +205,25 @@ class QuizGame:
 
     def add_quiz(self):
         print("\n새 퀴즈 추가")
-        # 문제를 빈 값이 아닐 때까지 입력받음
+        # 문제를 올바르게 입력할 때까지 입력받음
         while True:
             question = input("문제 입력: ").strip()
-            if question != "":
-                break # 빈 값이 아니면 반복 종료
-            print("문제는 비워둘 수 없습니다.")
+            # isprintable() : 화면에 정상적으로 표시되는 글자로만 되어 있으면 True
+            # (한글 입력 중 글자가 깨지면 False → 파일 저장 오류를 막기 위해 다시 입력받음)
+            if question != "" and question.isprintable():
+                break # 빈 값이 아니고 깨진 글자가 없으면 반복 종료
+            print("문제를 다시 입력하세요. (빈 값이나 깨진 글자는 사용할 수 없습니다)")
 
         choices = [] # 입력받은 선택지를 담을 리스트
         # 선택지 개수를 바꾸려면 range(1, 5) 등 입력 및 검증 로직을 함께 수정
         for i in range(1, 5): # i = 1, 2, 3, 4 → 선택지 4개 입력
             while True:
                 choice = input(f"보기 {i} 입력: ").strip()
-                if choice != "":
+                # 문제 입력과 똑같이, 빈 값이거나 깨진 글자가 있으면 다시 입력받음
+                if choice != "" and choice.isprintable():
                     choices.append(choice) # 리스트에 선택지 추가
                     break
-                print(f"보기 {i}는 비워둘 수 없습니다.")
+                print(f"보기 {i} 내용을 다시 입력하세요. (빈 값이나 깨진 글자는 사용할 수 없습니다)")
 
         answer = self.input_number("정답 번호(1~4): ", 1, 4)
         self.quizzes.append(Quiz(question, choices, answer)) # 새 Quiz 객체를 만들어 목록에 추가
