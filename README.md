@@ -311,44 +311,86 @@ E1-2/
 
 | 종류 | 언제 | 예시 |
 |---|---|---|
-| `Feat` | 새 기능을 만들었을 때 | `Feat: 퀴즈 풀기 기능 구현` |
-| `Fix` | 오류를 고쳤을 때 | `Fix: 점수 확인 오류 수정` |
-| `Docs` | 문서를 고쳤을 때 | `Docs: README 작성` |
+| `Feat` | 새 기능을 만들었을 때 | `Feat: Quiz 클래스 생성` |
+| `Fix` | 오류를 고쳤을 때 | `Fix: 깨진 한글 입력 시 저장 오류 수정 및 코드 단순화` |
+| `Docs` | 문서를 고쳤을 때 | `Docs: README.md 수정` |
+| `Chore` | 설정 파일을 고쳤을 때 | `Chore: __pycache__와 백업 파일을 Git 추적에서 제외` |
 
 ### 커밋 기록
 ```text
-$ git log --oneline --graph
-(여기에 실제 결과를 붙여넣으세요)
+$ git --no-pager log --oneline --graph
+* b459bce (HEAD -> main, origin/main, origin/HEAD) Docs: clone 실습으로 README에 한 줄 추가
+* 7f7a90d Docs: 저장소 주소, git log, 스크린샷 추가
+* 1e82c47 Docs: README 설명 보완 및 스크린샷 추가
+* 74ef60a Fix: 깨진 한글 입력 시 저장 오류 수정 및 코드 단순화
+* 078af93 Chore: __pycache__와 백업 파일을 Git 추적에서 제외
+* 5b96a73 Fix: 사전평가 반영 수정
+* 1996520 Docs: README.md 수정
+* 623a136 Docs: 기술문서 추가
+* 8003ef5 Docs: main.py 코드에 주석 달기
+* 69c6937 Docs: README.md 수정 (실행 방법, 기능목록 등)
+*   23f24bb Merge: feature/quiz-play 브랜치 병합
+|\
+| * 307af42 Docs: feature 브랜치에서 README 내용 작성
+|/
+* 346226b (origin/feature/quiz-play) Docs: 프로젝트 개요와 퀴즈 주제 선정 이유
+* 4fd1e5b Feat: 게임 시작과 메뉴 반복 실행, 중단 시 안전 종료 추가
+* 8ef95bb Feat: 최고 점수 및 퀴즈 수 확인 기능 추가
+* 6833276 Feat: 등록된 퀴즈 목록과 정답 보기 기능 추가
+* 1327a61 Feat: 새 퀴즈 문제 만들고 저장하기
+* 30d06cd Feat: 게임 메뉴 화면과 퀴즈 풀기 기능 추가
+* 19c8741 Feat: 정해진 범위 안의 숫자만 맞게 입력받기
+* 469476d Feat: state.json에 퀴즈와 최고 점수 파일 저장 기능 추가
+* 1c3074e Feat: QuizGame 시작 설정 및 퀴즈 불러오기
+* ca28db7 Feat: Quiz 클래스 생성
+* 80a6d2c Feat : 퀴즈 데이터 입력
+* f71b705 gitignore 생성
 ```
+> 이 README를 커밋하기 직전 기준의 기록입니다. 최신 기록은 GitHub 저장소의 커밋 목록에서 볼 수 있습니다.
+
+![git log](./docs/screenshots/git_log_graph.png)
 
 ### 브랜치 만들고 합치기
-퀴즈 풀기 기능은 `main`이 아닌 새 브랜치에서 만든 뒤 합쳤습니다.
+`feature/quiz-play` 브랜치를 만들어 README 내용을 작성한 뒤 `main`에 합쳤습니다.
 
 ```bash
-git checkout -b feature/play-quiz   # 새 브랜치를 만들고 그 브랜치로 이동
-git add main.py
-git commit -m "Feat: 퀴즈 풀기 기능 구현"
-git checkout main                   # main 브랜치로 돌아오기
-git merge feature/play-quiz         # 새 브랜치에서 한 작업을 main에 합치기
+git checkout -b feature/quiz-play              # 새 브랜치를 만들고 그 브랜치로 이동
+git add README.md
+git commit -m "Docs: feature 브랜치에서 README 내용 작성"
+git push origin feature/quiz-play              # 브랜치를 GitHub에도 올림
+git checkout main                              # main 브랜치로 돌아오기
+git merge feature/quiz-play                    # 브랜치에서 한 작업을 main에 합치기
 ```
 
-- **브랜치를 나눈 이유**: 새 기능을 만드는 동안 오류가 나더라도 `main`은 항상 잘 돌아가는 상태로 두기 위해서입니다.
-- **merge(병합)란?**: 다른 브랜치에서 한 작업을 지금 브랜치에 합치는 것입니다. 기능이 완성되면 `main`에 합칩니다.
+위 커밋 기록에서 `|\`로 갈라졌다가 `|/`로 다시 합쳐지는 부분이 브랜치를 만들고 병합한 기록입니다.
+
+![branch merge](./docs/screenshots/git_branch_merge.png)
+
+- **브랜치를 나눈 이유**: 새 작업을 하는 동안 오류가 나더라도 `main`은 항상 잘 돌아가는 상태로 두기 위해서입니다.
+- **merge(병합)란?**: 다른 브랜치에서 한 작업을 지금 브랜치에 합치는 것입니다. 작업이 끝나면 `main`에 합칩니다.
 
 ### clone / pull 실습
-GitHub 저장소를 다른 폴더에 복사(clone)해서 수정하고, 원래 폴더에서 그 수정 내용을 받아왔습니다(pull).
+GitHub 저장소를 다른 폴더(`E1-2-clone`)에 복사(clone)해서 수정하고, 원래 폴더(`E1-2`)에서 그 수정 내용을 받아왔습니다(pull).
 
 ```bash
-git clone https://github.com/sjchaa/E1-2 E1-2-clone   # 1) 다른 폴더에 저장소 복사
+cd ~
+git clone https://github.com/sjchaa/E1-2.git E1-2-clone   # 1) 다른 폴더에 저장소 복사
 cd E1-2-clone
-# 2) README에 한 줄 추가한 뒤
+echo "" >> README.md
+echo "> clone/pull 실습: 복제한 저장소(E1-2-clone)에서 추가한 줄입니다." >> README.md   # 2) README에 한 줄 추가
 git add README.md
-git commit -m "Docs: clone 실습"
-git push origin main                     # 3) GitHub에 올리기
+git commit -m "Docs: clone 실습으로 README에 한 줄 추가"
+git push origin main                                       # 3) GitHub에 올리기
 
-cd ../E1-2
-git pull origin main                     # 4) 원래 폴더에서 바뀐 내용 받아오기
+cd ~/E1-2
+git pull origin main                                       # 4) 원래 폴더에서 바뀐 내용 받아오기
+tail -2 README.md                                          # 5) 추가한 줄이 들어왔는지 확인
 ```
+
+| 단계 | 스크린샷 |
+|---|---|
+| 1~3) 다른 폴더에 clone → README 한 줄 추가 → commit → push | ![clone push](./docs/screenshots/git_clone_push.png) |
+| 4~5) 원래 폴더에서 pull → 추가한 줄과 커밋 기록(`b459bce`)이 들어온 것 확인 | ![pull](./docs/screenshots/git_pull.png) |
 
 ### 사용한 Git 명령어
 | 명령어 | 하는 일 |
@@ -361,6 +403,7 @@ git pull origin main                     # 4) 원래 폴더에서 바뀐 내용 
 | `git checkout` | 브랜치 만들기(`-b`) / 다른 브랜치로 이동 |
 | `git merge` | 다른 브랜치의 작업 합치기 |
 | `git clone` | GitHub 저장소를 통째로 복사해 오기 |
+
 
 ---
 
