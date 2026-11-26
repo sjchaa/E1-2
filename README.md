@@ -56,7 +56,7 @@ python3 main.py
 
 | 화면 | 스크린샷 |
 |---|---|
-| 개발 환경 (VS Code, Python 버전, Git 설정) | ![](/docs/screenshots/env.png) |
+| 개발 환경 (VS Code, Python 버전, Git 설정) | ![](./docs/screenshots/env.png) |
 | 메뉴 | ![](./docs/screenshots/menu.png) |
 | 퀴즈 풀기 | ![](./docs/screenshots/play.png) |
 | 퀴즈 추가 | ![](./docs/screenshots/add_quiz.png) |
@@ -146,10 +146,12 @@ $ python3 main.py
 
 ```text
 E1-2/
-├── .gitignore    # Git에 올리지 않을 파일 목록
-├── main.py       # 게임 코드 전체 (Quiz, QuizGame 클래스)
-├── README.md     # 지금 보고 있는 설명서
-└── state.json    # 퀴즈와 최고 점수를 저장하는 파일 (처음 실행하면 자동으로 생김)
+├── .gitignore        # Git에 올리지 않을 파일 목록 (__pycache__, state_backup.json)
+├── main.py           # 게임 코드 전체 (Quiz, QuizGame 클래스)
+├── README.md         # 지금 보고 있는 설명서
+├── state.json        # 퀴즈와 최고 점수를 저장하는 파일 (처음 실행하면 자동으로 생김)
+└── docs/
+    └── screenshots/  # README에 넣은 실행 화면, Git 기록 스크린샷
 ```
 
 ---
@@ -243,6 +245,7 @@ E1-2/
 | `abc` | "숫자를 입력하세요." |
 | `9` (메뉴에 없는 번호) | "1~5 사이의 숫자를 입력하세요." |
 | `0` (정답에 없는 번호) | "1~4 사이의 숫자를 입력하세요." |
+| 한글을 쓰다가 Backspace로 지움 | `readline`을 불러와 두어서 한글도 한 글자씩 깔끔하게 지워짐 |
 | 문제나 보기를 빈 값으로 입력하거나, 한글 입력 중 글자가 깨짐 | "문제를 다시 입력하세요. (빈 값이나 깨진 글자는 사용할 수 없습니다)" |
 
 안내 문구를 보여 준 뒤 **다시 입력받습니다.**
@@ -253,7 +256,8 @@ E1-2/
 | 상황 | 처리 |
 |---|---|
 | 파일이 없음 (처음 실행) | 기본 퀴즈 5개로 시작하고 파일을 새로 만듦 |
-| 파일 내용이 깨짐 (따옴표·쉼표가 빠짐, 필요한 값이 없음 등) | 깨진 파일을 `state_backup.json`으로 **복사해 둔 뒤** 기본 퀴즈로 다시 시작 |
+| 파일 내용이 깨짐 (따옴표·쉼표가 빠짐, 필요한 값이 없음, 점수가 숫자가 아님 등) | 깨진 파일을 `state_backup.json`으로 **복사해 둔 뒤** 기본 퀴즈로 다시 시작 |
+| 파일을 아예 읽을 수 없음 (권한 문제 등) | 백업이 안 된다고 안내한 뒤 기본 퀴즈로 다시 시작 |
 | 저장이 안 됨 (폴더에 쓰기 권한이 없음 등) | 오류 문구만 보여 주고 게임은 계속 |
 
 ```text
@@ -277,7 +281,7 @@ E1-2/
 | 바꾸고 싶은 것 | 고칠 곳 |
 |---|---|
 | 점수 계산 방법 | `play_quiz()`의 `score = int(correct_count / total * 100)` |
-| 보기 개수 (예: 4개 → 5개) | `add_quiz()`의 `range(1, 5)`, 정답 입력 범위 `1, 4` |
+| 보기 개수 (예: 4개 → 5개) | `add_quiz()`의 `range(1, 5)`, 정답 입력 범위 `1, 4` (`add_quiz()`, `play_quiz()` 두 곳) |
 | 기본 퀴즈 내용 | 맨 위 `DEFAULT_QUIZZES` |
 | 메뉴 추가 | `show_menu()`(화면), `run()`(번호별 기능) |
 | 저장 파일 이름 | 맨 위 `DATA_FILE` |
@@ -290,7 +294,9 @@ E1-2/
 - 퀴즈를 **하나만 추가해도 파일 전체를 처음부터 다시 씁니다.**
 - 프로그램을 켤 때 **모든 퀴즈를 한꺼번에 불러옵니다.**
 
-### 직접 재 봤더니
+### 측정해 보니
+같은 모양의 퀴즈를 개수별로 만들어 `json.dump()`(저장), `json.load()`(불러오기)에 걸리는 시간을 재 봤습니다.
+
 | 퀴즈 수 | 저장 시간 | 불러오는 시간 |
 |---|---|---|
 | 1,000개 | 약 0.004초 | 약 0.005초 |
@@ -639,7 +645,7 @@ except ValueError:
 
 ```bash
 git checkout -b feature/quiz-play   # 새 작업 공간 만들고 이동
-# ... 퀴즈 풀기 기능 작업 후 commit ...
+# ... 작업 후 add, commit ...
 git checkout main                   # 원본(main)으로 돌아오기
 git merge feature/quiz-play         # 작업한 내용을 원본에 합치기
 ```

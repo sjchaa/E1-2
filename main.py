@@ -127,6 +127,11 @@ class QuizGame:
             self.quizzes = [Quiz.from_dict(item) for item in data["quizzes"]]
             # 최고 점수를 가져옴 (저장된 값이 없으면 None)
             self.best_score = data.get("best_score")
+            # 점수가 있으면 숫자(int)로 바꿈
+            # → 점수가 "abc" 같은 글자로 잘못 저장돼 있으면 여기서 ValueError가 나서
+            #   아래 except 로 넘어가 기본 퀴즈로 복구됨 (나중에 점수 비교할 때 멈추는 걸 막음)
+            if self.best_score is not None:
+                self.best_score = int(self.best_score)
 
             print(f"저장된 데이터를 불러왔습니다. (퀴즈 {len(self.quizzes)}개)")
 
@@ -140,8 +145,12 @@ class QuizGame:
             print(f"데이터 파일에 문제가 있어 기본 퀴즈로 복구합니다. ({error})")
             # 기본 퀴즈로 덮어쓰기 '전에' 깨진 파일을 백업 파일로 복사해 둠
             # → 나중에 원래 데이터를 되살릴 수 있게 하려고
-            shutil.copy(DATA_FILE, BACKUP_FILE)
-            print(f"손상된 원본은 {BACKUP_FILE} 파일로 백업했습니다.")
+            # 파일을 아예 읽을 수 없는 상황이면 복사도 실패할 수 있으므로 한 번 더 try 로 감쌈
+            try:
+                shutil.copy(DATA_FILE, BACKUP_FILE)
+                print(f"손상된 원본은 {BACKUP_FILE} 파일로 백업했습니다.")
+            except OSError:
+                print("손상된 파일을 백업하지 못했습니다. (파일을 읽을 수 없음)")
             self.use_default_quizzes()
             self.save_data()
 
